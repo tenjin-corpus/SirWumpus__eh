@@ -112,7 +112,7 @@ all: build
 build: eh$E
 
 clean:
-	-rm -f build.h *.core *.stackdump *.i a.out a.txt b.txt
+	-rm -f eh$E build.h *.core *.stackdump *.i a.out a.txt b.txt
 	-rm -rf test/terminfo.cdb
 
 distclean clobber: clean
