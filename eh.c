@@ -1902,10 +1902,17 @@ search_next(void)
 	 */
 	off_t next = here + (replace == NULL ? match_length : 0);
 	if (next < eof and 0 == regexec(&ere, ptr(next), MATCHES, matches, REG_NOTBOL)) {
+		if (replace_all and search_wrapped and search_start <= next+matches[0].rm_so) {
+			replace_all = 0;
+			search_wrapped = 0;
+			search_start = 0;
+			match_length = 0;
+			return;
+		}
 		here = next + matches[0].rm_so;
 	}
 	/* Wrap-around search. */
-	else if (0 == regexec(&ere, buf, MATCHES, matches, 0)) {
+	else if ((not replace_all or not search_wrapped) and 0 == regexec(&ere, buf, MATCHES, matches, 0)) {
 		here = matches[0].rm_so;
 		search_wrapped = 1;
 	}
