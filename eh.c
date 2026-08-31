@@ -1708,8 +1708,12 @@ indent(void)
 	/* Modify the region from stop down to start. */
 	off_t tabs = 0;
 	while (start < stop) {
+		off_t previous = stop;
 		/* Previous physical line.*/
 		stop = bol(stop-1);
+		if (stop == 0 and 1 < previous and *ptr(0) == '\n') {
+			stop = 1;
+		}
 		/* Only indent non-empty lines.  Consider `>2}` repeated;
 		 * if you indent empty lines subsequent motions will be off.
 		 */
@@ -1764,8 +1768,12 @@ outdent(void)
 	/* Modify the region from stop down to start. */
 	off_t tabs = 0;
 	while (start < stop) {
+		off_t previous = stop;
 		/* Previous physical line.*/
 		stop = bol(stop-1);
+		if (stop == 0 and 1 < previous and *ptr(0) == '\n') {
+			stop = 1;
+		}
 		movegap(stop);
 		if (isblank(*egap)) {
 			int span;
