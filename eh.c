@@ -712,7 +712,8 @@ down(void)
 void
 lnplus(void)
 {
-	here = col_or_eol(here, 0, MAX_COLS)+(here < pos(ebuf));
+	here = col_or_eol(here, 0, MAX_COLS);
+	here += here < pos(ebuf);
 }
 
 /**
